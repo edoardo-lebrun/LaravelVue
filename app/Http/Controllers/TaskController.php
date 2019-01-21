@@ -37,8 +37,8 @@ class TaskController extends Controller
     {
         $task = Task::create([
             'name' => $request->name,
-            'category_id' => $request->category_id,
-            'user_id' => $request->user_id,
+            'category_id' => $request->categoryId,
+            'user_id' => $request->userId,
             'order' => $request->order
         ]);
 
@@ -81,7 +81,7 @@ class TaskController extends Controller
     public function update(Request $request, Task $task)
     {
         $status = $task->update(
-          $request->only(['name', 'category_id', 'user_id', 'order'])
+          $request->only(['name', 'categoryId', 'userId', 'order'])
         );
 
         return response()->json([
@@ -98,7 +98,7 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        $status = $task->delete();
+        $status = $task->delete($task);
 
         return response()->json([
            'status' => $status,

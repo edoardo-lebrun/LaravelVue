@@ -63,6 +63,7 @@ const router = new VueRouter({
             path: '/board',
             name: 'board',
             component: Dashboard,
+            props: true
         }
     ]
 });
