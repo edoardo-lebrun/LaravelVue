@@ -26,9 +26,9 @@ Vue.component('example-component', require('./components/ExampleComponent.vue'))
 
 import App from '../js/components/App'
 import Home from '../js/components/Welcome'
-import Dashboard from '../js/components/Board'
-import Login from '../js/components/Login'
-import Register from '../js/components/Register'
+import Login from './components/Login'
+import Register from './components/Register'
+import Dashboard from './components/Board'
 
 // const files = require.context('./', true, /\.vue$/i)
 
@@ -50,12 +50,12 @@ const router = new VueRouter({
             component: Home,
         },
         {
-            path: '/login',
+            path: '/user-login',
             name: 'login',
             component: Login,
         },
         {
-            path: '/register',
+            path: '/register-user',
             name: 'register',
             component: Register
         },

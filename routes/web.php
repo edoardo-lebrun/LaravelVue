@@ -11,8 +11,8 @@
 |
 */
 
-Route::get('/{any}', 'SinglePageController@index')->where('any', '.*');
+Route::auth();
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/{vue_capture?}', function () {
+    return view('landing');
+})->where('vue_capture', '[\/\w\.-]*');
