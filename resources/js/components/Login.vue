@@ -1,36 +1,36 @@
 <template>
-    <div class="row">
-        <div class="col-md-6 offset-md-3">
-            <div class="row">
-                <div class="col-md-8 offset-md-2">
-                    <div class="card">
-                        <div class="card-header">
-                            <h3>Login</h3>
-                        </div>
-                        <div class="card-body">
-                            <div class="alert alert-danger" v-if="errori.length !== 0">
-                                <ul class="list-group">
-                                    <li class="list-group-item" v-for="(error, i) in errori">
-                                        {{i}}: {{error[0]}}
-                                    </li>
-                                </ul>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card card-default">
+                    <div class="card-header">Login</div>
+
+                    <div class="card-body">
+                        <form method="POST" action="/login">
+                            <div class="form-group row">
+                                <label for="email" class="col-sm-4 col-form-label text-md-right">E-Mail Address</label>
+
+                                <div class="col-md-6">
+                                    <input id="email" type="email" class="form-control" v-model="email" required autofocus>
+                                </div>
                             </div>
-                            <form>
-                                <div class="form-group">
-                                    <label>Email</label>
-                                    <input type="email" class="form-control" name="email" v-model="email" />
+
+                            <div class="form-group row">
+                                <label for="password" class="col-md-4 col-form-label text-md-right">Password</label>
+
+                                <div class="col-md-6">
+                                    <input id="password" type="password" class="form-control" v-model="password" required>
                                 </div>
-                                <div class="form-group">
-                                    <label>Password</label>
-                                    <input type="password" class="form-control" name="password" v-model="password" />
-                                </div>
-                                <div class="form-group">
-                                    <button class="btn btn-primary" type="submit" @click.prevent.default="makeLogin">
-                                        Invia
+                            </div>
+
+                            <div class="form-group row mb-0">
+                                <div class="col-md-8 offset-md-4">
+                                    <button type="submit" class="btn btn-primary" @click="handleSubmit">
+                                        Login
                                     </button>
                                 </div>
-                            </form>
-                        </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -42,25 +42,39 @@
     export default {
         data(){
             return {
-                email: '',
-                password: '',
-                errori: []
+                email : "",
+                password : ""
             }
         },
-        methods:{
-            makeLogin(){
-                axios.post('login', {user: [this.email, this.password]})
-                    .then(response => {
-                        router.to('/board')
+        methods : {
+            handleSubmit(e){
+                e.preventDefault();
+
+                if (this.password.length > 0) {
+                    axios.post('api/login', {
+                        email: this.email,
+                        password: this.password
                     })
-                    .catch(errors => {
-                        this.errori = errors.response.data.errors
-                    })
+                        .then(response => {
+                            localStorage.setItem('user', response.data.success.name);
+                            localStorage.setItem('jwt', response.data.success.token);
+
+                            if (localStorage.getItem('jwt') != null){
+                                this.$router.go('/board')
+                            }
+                        })
+                        .catch(function (error) {
+                            console.error(error);
+                        });
+                }
             }
+        },
+        beforeRouteEnter (to, from, next) {
+            if (localStorage.getItem('jwt')) {
+                return next('board');
+            }
+
+            next();
         }
     }
 </script>
-
-<style scoped>
-
-</style>
