@@ -80,9 +80,10 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        $status = $task->update(
-          $request->only(['name', 'categoryId', 'userId', 'order'])
-        );
+        $task->category_id = $request['category_id'];
+        $task->order = $request['order'];
+
+        $status = $task->update();
 
         return response()->json([
            'status' => $status,

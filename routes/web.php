@@ -16,3 +16,5 @@ Route::auth();
 Route::get('/{vue_capture?}', function () {
     return view('landing');
 })->where('vue_capture', '[\/\w\.-]*');
+
+Route::post('loadTask', 'TaskController@index');

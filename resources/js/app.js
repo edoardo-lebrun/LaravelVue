@@ -68,10 +68,14 @@ const router = new VueRouter({
     ]
 });
 
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+})
+
 const app = new Vue({
     el: '#app',
     components: { App },
-    router
+    router,
 });
 
 
