@@ -72,10 +72,8 @@ $(function () {
     $('[data-toggle="tooltip"]').tooltip()
 })
 
-const app = new Vue({
+const vm = new Vue({
     el: '#app',
     components: { App },
     router,
 });
-
-

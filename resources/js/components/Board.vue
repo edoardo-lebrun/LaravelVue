@@ -54,6 +54,30 @@
         created(){
           this.loadCategories();
         },
+        watch: {
+            // categories:{
+            //     tasks: {
+            //         orderChanged(){
+            //             return this.task.order
+            //         }
+            //     }, deep: true
+            // }
+            'data.categories':{
+                tasks: {
+                    handler(oldVal, newVal){
+                        console.log('Cambio')
+                    }
+                }, deep:true
+            },
+            $data: {
+                handler: function(val, oldVal) {
+                    console.log(val.categories);
+                    val = this.categories
+                },
+                deep: true
+            }
+
+        },
         methods:{
             orderedTasks: function (tasks) {
                 return _.orderBy(tasks, 'task.order')
@@ -69,7 +93,6 @@
                             });
                         });
                         this.loadTasks();
-                        console.log('Categoria con tasks' ,this.categories)
                     })
             },
             loadTasks(){
@@ -99,15 +122,15 @@
                 console.log('New '+data.newIndex, 'Old '+data.oldIndex);
                 console.log('toTaskID '+toTask.id, 'Order: '+order, 'CategoryID '+category_id, 'TaskID '+task_id);
 
-                if (order !== false) {
-                    axios.patch('api/task/'+task_id, {order, category_id}).then(response => {
-
-                    });
-                } else {
-                    axios.patch('api/task/'+task_id, {order: data.oldIndex, category_id}).then(response => {
-
-                    })
-                }
+                // if (order !== false) {
+                //     axios.patch('api/task/'+task_id, {order, category_id}).then(response => {
+                //
+                //     });
+                // } else {
+                //     axios.patch('api/task/'+task_id, {order: data.oldIndex, category_id}).then(response => {
+                //
+                //     })
+                // }
             }
         }
     }

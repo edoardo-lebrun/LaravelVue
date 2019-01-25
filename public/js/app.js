@@ -48074,7 +48074,7 @@ module.exports = Vue;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuedraggable__ = __webpack_require__(75);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuedraggable__ = __webpack_require__(69);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vuedraggable___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vuedraggable__);
 //
 //
@@ -48134,6 +48134,30 @@ module.exports = Vue;
         this.loadCategories();
     },
 
+    watch: {
+        // categories:{
+        //     tasks: {
+        //         orderChanged(){
+        //             return this.task.order
+        //         }
+        //     }, deep: true
+        // }
+        'data.categories': {
+            tasks: {
+                handler: function handler(oldVal, newVal) {
+                    console.log('Cambio');
+                }
+            }, deep: true
+        },
+        $data: {
+            handler: function handler(val, oldVal) {
+                console.log(val.categories);
+                val = this.categories;
+            },
+            deep: true
+        }
+
+    },
     methods: {
         orderedTasks: function orderedTasks(tasks) {
             return _.orderBy(tasks, 'task.order');
@@ -48150,7 +48174,6 @@ module.exports = Vue;
                     });
                 });
                 _this.loadTasks();
-                console.log('Categoria con tasks', _this.categories);
             });
         },
         loadTasks: function loadTasks() {
@@ -48179,11 +48202,15 @@ module.exports = Vue;
             console.log('New ' + data.newIndex, 'Old ' + data.oldIndex);
             console.log('toTaskID ' + toTask.id, 'Order: ' + order, 'CategoryID ' + category_id, 'TaskID ' + task_id);
 
-            if (order !== false) {
-                axios.patch('api/task/' + task_id, { order: order, category_id: category_id }).then(function (response) {});
-            } else {
-                axios.patch('api/task/' + task_id, { order: data.oldIndex, category_id: category_id }).then(function (response) {});
-            }
+            // if (order !== false) {
+            //     axios.patch('api/task/'+task_id, {order, category_id}).then(response => {
+            //
+            //     });
+            // } else {
+            //     axios.patch('api/task/'+task_id, {order: data.oldIndex, category_id}).then(response => {
+            //
+            //     })
+            // }
         }
     }
 });
@@ -48193,7 +48220,7 @@ module.exports = Vue;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(45);
-module.exports = __webpack_require__(70);
+module.exports = __webpack_require__(72);
 
 
 /***/ }),
@@ -48279,7 +48306,7 @@ $(function () {
     $('[data-toggle="tooltip"]').tooltip();
 });
 
-var app = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
+var vm = new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     el: '#app',
     components: { App: __WEBPACK_IMPORTED_MODULE_2__js_components_App__["a" /* default */] },
     router: router
@@ -52171,7 +52198,7 @@ if (false) {
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__babel_loader_cacheDirectory_true_presets_env_modules_false_targets_browsers_2_uglify_true_plugins_transform_object_rest_spread_transform_runtime_polyfill_false_helpers_false_node_modules_vue_loader_lib_selector_type_script_index_0_Board_vue__ = __webpack_require__(43);
 /* unused harmony namespace reexport */
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_32a8a844_hasScoped_true_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_Board_vue__ = __webpack_require__(69);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__node_modules_vue_loader_lib_template_compiler_index_id_data_v_32a8a844_hasScoped_true_optionsId_0_buble_transforms_node_modules_vue_loader_lib_selector_type_template_index_0_Board_vue__ = __webpack_require__(71);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__node_modules_vue_loader_lib_runtime_component_normalizer__ = __webpack_require__(3);
 var disposed = false
 function injectStyle (context) {
@@ -52258,165 +52285,13 @@ exports = module.exports = __webpack_require__(12)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
 
 /***/ }),
 /* 69 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
-    _c("div", { staticClass: "row justify-content-center" }, [
-      _c("div", { staticClass: "col-md-12" }, [
-        _c("div", { staticClass: "card" }, [
-          _c("div", { staticClass: "card-header text-center" }, [
-            _vm._v("\n                    To Do List\n                ")
-          ]),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "card-deck",
-              staticStyle: { padding: "15px 0 15px 0" }
-            },
-            _vm._l(_vm.categories, function(category, index) {
-              return _c(
-                "div",
-                { key: category.id, class: _vm.setColumns(category) },
-                [
-                  _c("div", { staticClass: "card" }, [
-                    _c("div", { staticClass: "card-header text-center" }, [
-                      _c("div", { staticClass: "row" }, [
-                        _c("div", { staticClass: "col-md-10 col-lg-10" }, [
-                          _vm._v(
-                            "\n                                        " +
-                              _vm._s(category.name) +
-                              "\n                                    "
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c(
-                          "div",
-                          { staticClass: "col-md-2 col-lg-2 ml-auto" },
-                          [
-                            category.id === 1
-                              ? _c("i", {
-                                  staticClass: "fa fa-plus-square",
-                                  staticStyle: {
-                                    color: "gray",
-                                    cursor: "pointer"
-                                  },
-                                  attrs: {
-                                    "data-toggle": "tooltip",
-                                    "data-placement": "top",
-                                    title: "Aggiungi una nuova nota"
-                                  }
-                                })
-                              : _vm._e()
-                          ]
-                        )
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "card-body" }, [
-                      _c(
-                        "ul",
-                        { staticClass: "list-group" },
-                        [
-                          _c(
-                            "draggable",
-                            {
-                              key: category.id,
-                              attrs: {
-                                options: { group: "description", animation: 1 }
-                              },
-                              on: { end: _vm.changeOrder },
-                              model: {
-                                value: category.tasks,
-                                callback: function($$v) {
-                                  _vm.$set(category, "tasks", $$v)
-                                },
-                                expression: "category.tasks"
-                              }
-                            },
-                            [
-                              _c(
-                                "transition-group",
-                                { attrs: { id: category.id } },
-                                _vm._l(
-                                  _vm.orderedTasks(category.tasks),
-                                  function(task, index) {
-                                    return _c(
-                                      "li",
-                                      {
-                                        key: task.id,
-                                        staticClass:
-                                          "list-group-item transit-1",
-                                        attrs: { task: task, id: task.id }
-                                      },
-                                      [
-                                        _vm._v(
-                                          "\n                                                " +
-                                            _vm._s(task.order + 1) +
-                                            " " +
-                                            _vm._s(task.name) +
-                                            "\n                                            "
-                                        )
-                                      ]
-                                    )
-                                  }
-                                ),
-                                0
-                              )
-                            ],
-                            1
-                          )
-                        ],
-                        1
-                      )
-                    ])
-                  ])
-                ]
-              )
-            }),
-            0
-          )
-        ])
-      ])
-    ])
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-32a8a844", { render: render, staticRenderFns: staticRenderFns })
-  }
-}
-
-/***/ }),
-/* 70 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 71 */,
-/* 72 */,
-/* 73 */,
-/* 74 */,
-/* 75 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -52836,7 +52711,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
   }
 
   if (true) {
-    var Sortable = __webpack_require__(76);
+    var Sortable = __webpack_require__(70);
     module.exports = buildDraggable(Sortable);
   } else if (typeof define == "function" && define.amd) {
     define(['sortablejs'], function (Sortable) {
@@ -52849,7 +52724,7 @@ function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr
 })();
 
 /***/ }),
-/* 76 */
+/* 70 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/**!
@@ -55194,6 +55069,154 @@ var __WEBPACK_AMD_DEFINE_FACTORY__, __WEBPACK_AMD_DEFINE_RESULT__;/**!
 	return Sortable;
 });
 
+
+/***/ }),
+/* 71 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container" }, [
+    _c("div", { staticClass: "row justify-content-center" }, [
+      _c("div", { staticClass: "col-md-12" }, [
+        _c("div", { staticClass: "card" }, [
+          _c("div", { staticClass: "card-header text-center" }, [
+            _vm._v("\n                    To Do List\n                ")
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "card-deck",
+              staticStyle: { padding: "15px 0 15px 0" }
+            },
+            _vm._l(_vm.categories, function(category, index) {
+              return _c(
+                "div",
+                { key: category.id, class: _vm.setColumns(category) },
+                [
+                  _c("div", { staticClass: "card" }, [
+                    _c("div", { staticClass: "card-header text-center" }, [
+                      _c("div", { staticClass: "row" }, [
+                        _c("div", { staticClass: "col-md-10 col-lg-10" }, [
+                          _vm._v(
+                            "\n                                        " +
+                              _vm._s(category.name) +
+                              "\n                                    "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          { staticClass: "col-md-2 col-lg-2 ml-auto" },
+                          [
+                            category.id === 1
+                              ? _c("i", {
+                                  staticClass: "fa fa-plus-square",
+                                  staticStyle: {
+                                    color: "gray",
+                                    cursor: "pointer"
+                                  },
+                                  attrs: {
+                                    "data-toggle": "tooltip",
+                                    "data-placement": "top",
+                                    title: "Aggiungi una nuova nota"
+                                  }
+                                })
+                              : _vm._e()
+                          ]
+                        )
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "card-body" }, [
+                      _c(
+                        "ul",
+                        { staticClass: "list-group" },
+                        [
+                          _c(
+                            "draggable",
+                            {
+                              key: category.id,
+                              attrs: {
+                                options: { group: "description", animation: 1 }
+                              },
+                              on: { end: _vm.changeOrder },
+                              model: {
+                                value: category.tasks,
+                                callback: function($$v) {
+                                  _vm.$set(category, "tasks", $$v)
+                                },
+                                expression: "category.tasks"
+                              }
+                            },
+                            [
+                              _c(
+                                "transition-group",
+                                { attrs: { id: category.id } },
+                                _vm._l(
+                                  _vm.orderedTasks(category.tasks),
+                                  function(task, index) {
+                                    return _c(
+                                      "li",
+                                      {
+                                        key: task.id,
+                                        staticClass:
+                                          "list-group-item transit-1",
+                                        attrs: { task: task, id: task.id }
+                                      },
+                                      [
+                                        _vm._v(
+                                          "\n                                                " +
+                                            _vm._s(task.order + 1) +
+                                            " " +
+                                            _vm._s(task.name) +
+                                            "\n                                            "
+                                        )
+                                      ]
+                                    )
+                                  }
+                                ),
+                                0
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      )
+                    ])
+                  ])
+                ]
+              )
+            }),
+            0
+          )
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-32a8a844", { render: render, staticRenderFns: staticRenderFns })
+  }
+}
+
+/***/ }),
+/* 72 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);
