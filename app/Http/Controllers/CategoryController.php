@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Category;
 use Illuminate\Http\Request;
+use App\Task;
 
 class CategoryController extends Controller
 {
@@ -97,8 +98,9 @@ class CategoryController extends Controller
             'message' => $status ? 'Category Deleted' : 'Error Deleting Category']);
     }
 
-    public function tasks(Category $category)
+    public function tasks()
     {
-        return response()->json($category->tasks()->orderBy('order')->get());
+        $tasks = Task::orderBy('order')->get();
+        return response()->json($tasks);
     }
 }

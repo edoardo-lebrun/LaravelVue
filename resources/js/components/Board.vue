@@ -21,9 +21,9 @@
                                 </div>
                                 <div class="card-body">
                                     <ul class="list-group">
-                                        <draggable :options="{group:'description', animation: 1}" @end="changeOrder" :key="category.id" v-model="category.tasks">
+                                        <draggable :options="{group:'description', animation: 1}" @end="changeOrder" :key="category.id" v-model="tasks">
                                             <transition-group :id="category.id">
-                                                <li class="list-group-item transit-1" v-for="(task, index) in orderedTasks(category.tasks)" :task="task" :key="task.id" :id="task.id">
+                                                <li class="list-group-item transit-1" v-for="(task, index) in orderedTasks(tasks)" :task="task.order" :key="task.id" :id="task.id" ref="task" v-if="category.id === task.category_id">
                                                     {{task.order+1}} {{task.name}}
                                                 </li>
                                             </transition-group>
@@ -46,6 +46,7 @@
         data(){
             return {
                 categories: [],
+                tasks: []
             }
         },
         components:{
@@ -53,6 +54,7 @@
         },
         created(){
           this.loadCategories();
+          this.loadTasks();
         },
         watch: {
             // categories:{
@@ -63,7 +65,7 @@
             //     }, deep: true
             // }
             'data.categories':{
-                tasks: {
+                $tasks: {
                     handler(oldVal, newVal){
                         console.log('Cambio')
                     }
@@ -71,67 +73,74 @@
             },
             $data: {
                 handler: function(val, oldVal) {
-                    console.log(val.categories);
-                    val = this.categories
+                    // console.log(val.categories[1].tasks);
                 },
                 deep: true
             }
 
         },
-        methods:{
+        methods: {
             orderedTasks: function (tasks) {
                 return _.orderBy(tasks, 'task.order')
             },
-            loadCategories(){
+            loadCategories() {
                 axios.get('api/category')
                     .then(response => {
                         response.data.forEach((data) => {
                             this.categories.push({
                                 id: data.id,
                                 name: data.name,
-                                tasks:[]
+
                             });
                         });
-                        this.loadTasks();
                     })
             },
-            loadTasks(){
-                this.categories.map(category => {
-                    axios.get('api/category/'+category.id+'/tasks')
-                        .then(response =>{
-                            category.tasks = response.data
-                        })
-                });
+            loadTasks() {
+                axios.get('api/task')
+                    .then(response => {
+                        response.data.forEach((data) => {
+                            this.tasks.push({
+                                id: data.id,
+                                name: data.name,
+                                category_id: data.category_id,
+                                order: data.order
+                            })
+                        });
+                        console.log(this.categories, this.tasks);
+                    });
+
                 this.$nextTick(function () {
                     $('[data-toggle="tooltip"]').tooltip()
                 })
             },
-            setColumns(category){
-                if(category.id === 2){
+            setColumns(category) {
+                if (category.id === 2) {
                     return 'col-md-6'
                 }
                 return 'col-md-3'
             },
-            changeOrder(data){
+            changeOrder(data) {
                 let toTask = data.to;
                 let fromTask = data.from;
                 let task_id = data.item.id;
                 let category_id = fromTask.id === toTask.id ? fromTask.id : toTask.id;
                 let order = data.newIndex === data.oldIndex ? false : data.newIndex;
 
-                console.log('New '+data.newIndex, 'Old '+data.oldIndex);
-                console.log('toTaskID '+toTask.id, 'Order: '+order, 'CategoryID '+category_id, 'TaskID '+task_id);
+                // console.log('New '+data.newIndex, 'Old '+data.oldIndex);
+                // console.log('toTaskID '+toTask.id, 'Order: '+order, 'CategoryID '+category_id, 'TaskID '+task_id);
+
+                console.log(value.item.attributes[1].value);
+                console.log(this.$refs.task);
 
                 // if (order !== false) {
                 //     axios.patch('api/task/'+task_id, {order, category_id}).then(response => {
-                //
                 //     });
                 // } else {
                 //     axios.patch('api/task/'+task_id, {order: data.oldIndex, category_id}).then(response => {
                 //
                 //     })
                 // }
-            }
+            },
         }
     }
 </script>

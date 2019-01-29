@@ -48123,7 +48123,8 @@ module.exports = Vue;
 /* harmony default export */ __webpack_exports__["a"] = ({
     data: function data() {
         return {
-            categories: []
+            categories: [],
+            tasks: []
         };
     },
 
@@ -48132,6 +48133,7 @@ module.exports = Vue;
     },
     created: function created() {
         this.loadCategories();
+        this.loadTasks();
     },
 
     watch: {
@@ -48143,7 +48145,7 @@ module.exports = Vue;
         //     }, deep: true
         // }
         'data.categories': {
-            tasks: {
+            $tasks: {
                 handler: function handler(oldVal, newVal) {
                     console.log('Cambio');
                 }
@@ -48151,8 +48153,7 @@ module.exports = Vue;
         },
         $data: {
             handler: function handler(val, oldVal) {
-                console.log(val.categories);
-                val = this.categories;
+                // console.log(val.categories[1].tasks);
             },
             deep: true
         }
@@ -48169,19 +48170,27 @@ module.exports = Vue;
                 response.data.forEach(function (data) {
                     _this.categories.push({
                         id: data.id,
-                        name: data.name,
-                        tasks: []
+                        name: data.name
+
                     });
                 });
-                _this.loadTasks();
             });
         },
         loadTasks: function loadTasks() {
-            this.categories.map(function (category) {
-                axios.get('api/category/' + category.id + '/tasks').then(function (response) {
-                    category.tasks = response.data;
+            var _this2 = this;
+
+            axios.get('api/task').then(function (response) {
+                response.data.forEach(function (data) {
+                    _this2.tasks.push({
+                        id: data.id,
+                        name: data.name,
+                        category_id: data.category_id,
+                        order: data.order
+                    });
                 });
+                console.log(_this2.categories, _this2.tasks);
             });
+
             this.$nextTick(function () {
                 $('[data-toggle="tooltip"]').tooltip();
             });
@@ -48199,12 +48208,14 @@ module.exports = Vue;
             var category_id = fromTask.id === toTask.id ? fromTask.id : toTask.id;
             var order = data.newIndex === data.oldIndex ? false : data.newIndex;
 
-            console.log('New ' + data.newIndex, 'Old ' + data.oldIndex);
-            console.log('toTaskID ' + toTask.id, 'Order: ' + order, 'CategoryID ' + category_id, 'TaskID ' + task_id);
+            // console.log('New '+data.newIndex, 'Old '+data.oldIndex);
+            // console.log('toTaskID '+toTask.id, 'Order: '+order, 'CategoryID '+category_id, 'TaskID '+task_id);
+
+            console.log(value.item.attributes[1].value);
+            console.log(this.$refs.task);
 
             // if (order !== false) {
             //     axios.patch('api/task/'+task_id, {order, category_id}).then(response => {
-            //
             //     });
             // } else {
             //     axios.patch('api/task/'+task_id, {order: data.oldIndex, category_id}).then(response => {
@@ -52285,7 +52296,7 @@ exports = module.exports = __webpack_require__(12)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -55148,40 +55159,47 @@ var render = function() {
                               },
                               on: { end: _vm.changeOrder },
                               model: {
-                                value: category.tasks,
+                                value: _vm.tasks,
                                 callback: function($$v) {
-                                  _vm.$set(category, "tasks", $$v)
+                                  _vm.tasks = $$v
                                 },
-                                expression: "category.tasks"
+                                expression: "tasks"
                               }
                             },
                             [
                               _c(
                                 "transition-group",
                                 { attrs: { id: category.id } },
-                                _vm._l(
-                                  _vm.orderedTasks(category.tasks),
-                                  function(task, index) {
-                                    return _c(
-                                      "li",
-                                      {
-                                        key: task.id,
-                                        staticClass:
-                                          "list-group-item transit-1",
-                                        attrs: { task: task, id: task.id }
-                                      },
-                                      [
-                                        _vm._v(
-                                          "\n                                                " +
-                                            _vm._s(task.order + 1) +
-                                            " " +
-                                            _vm._s(task.name) +
-                                            "\n                                            "
-                                        )
-                                      ]
-                                    )
-                                  }
-                                ),
+                                _vm._l(_vm.orderedTasks(_vm.tasks), function(
+                                  task,
+                                  index
+                                ) {
+                                  return category.id === task.category_id
+                                    ? _c(
+                                        "li",
+                                        {
+                                          key: task.id,
+                                          ref: "task",
+                                          refInFor: true,
+                                          staticClass:
+                                            "list-group-item transit-1",
+                                          attrs: {
+                                            task: task.order,
+                                            id: task.id
+                                          }
+                                        },
+                                        [
+                                          _vm._v(
+                                            "\n                                                " +
+                                              _vm._s(task.order + 1) +
+                                              " " +
+                                              _vm._s(task.name) +
+                                              "\n                                            "
+                                          )
+                                        ]
+                                      )
+                                    : _vm._e()
+                                }),
                                 0
                               )
                             ],
